@@ -97,7 +97,7 @@ tango install-hooks        # Write hooks to ~/.claude/settings.json
 tango hook pretooluse      # Handle a PreToolUse hook event (reads JSON from stdin)
 tango hook notification    # Handle a Notification hook event (reads JSON from stdin)
 tango ask --prompt TEXT    # Post a notification and wait for a gesture
-tango calibrate            # Interactive calibration for your mic/environment
+tango calibrate            # Interactive calibration (⚠️ WIP — not functional yet)
 tango config get <key>     # Read a config value
 tango config set <key> <value>  # Write a config value
 tango daemon status        # Check if the daemon is running
@@ -133,7 +133,7 @@ include_command_in_body = true
 
 ## Calibration
 
-Run `tango calibrate` from the menu bar (or CLI) the first time on each Mac. It samples your ambient noise floor and runs a few tap trials to tune detection thresholds.
+> ⚠️ **Work in progress — not functional yet.** Skip calibration for now; the default thresholds work well for finger taps and claps on most Macs. Calibration will be fixed in a future release.
 
 ---
 

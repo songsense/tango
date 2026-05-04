@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build tango CLI (release)
+        run: swift build -c release --product tango
+
+      - name: Build TangoApp daemon (release)
+        run: swift build -c release --product ClaudeToolApp
+
+      - name: Bundle Tango.app
+        run: bash Scripts/bundle-app.sh
+
+      - name: Create release archive
+        run: |
+          mkdir -p dist
+          cp .build/arm64-apple-macosx/release/tango dist/tango
+          cp -r build/Tango.app dist/Tango.app
+          tar -czf dist/tango-macos-arm64.tar.gz -C dist tango Tango.app
+          shasum -a 256 dist/tango-macos-arm64.tar.gz > dist/tango-macos-arm64.tar.gz.sha256
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/tango-macos-arm64.tar.gz
+            dist/tango-macos-arm64.tar.gz.sha256
+          generate_release_notes: true

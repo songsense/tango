@@ -12,7 +12,7 @@ struct Ask: ParsableCommand {
     var prompt: String
 
     @Option(name: .long, help: "Seconds to wait for a response before timing out.")
-    var timeout: Double = 180
+    var timeout: Double = 30
 
     @Option(name: .long, help: "Optional tool name shown in the notification title.")
     var tool: String?

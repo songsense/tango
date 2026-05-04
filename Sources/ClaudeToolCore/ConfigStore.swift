@@ -28,7 +28,7 @@ public struct DetectionConfig: Codable, Sendable {
     public var calibratedPatPeakDb: Double?
 
     public init(
-        timeoutSeconds: Double = 180,
+        timeoutSeconds: Double = 30,
         inputDevice: String = "default",
         inputDeviceName: String? = nil,
         sensitivityDb: Double = 8.0,

@@ -84,7 +84,7 @@ The app lives in the menu bar. Grant microphone and notification permissions whe
 | 2 taps | Yes, always — allow and remember |
 | 3 taps | No — deny |
 | Notification button | Same as tap (keyboard fallback) |
-| No response | Times out (default 3 min), Claude decides |
+| No response | Times out (default 30 s), Claude decides |
 
 Tap or clap anywhere near the Mac — desk, case, or open hand. Voice and keyboard noise are filtered automatically.
 
@@ -111,7 +111,7 @@ Config lives at `~/.config/tango/config.toml` (created on first run):
 
 ```toml
 [detection]
-timeout_seconds = 180
+timeout_seconds = 30
 sensitivity_db = 12.0        # dB above noise floor to count as a tap
 input_device = "default"     # mic name, or "default"
 

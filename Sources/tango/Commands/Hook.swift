@@ -53,6 +53,18 @@ extension Hook {
             abstract: "Reads a Claude PreToolUse JSON payload from stdin and emits a permission decision to stdout."
         )
 
+        /// Tools we never want to gate with a Tango notification. Read-only
+        /// or pure-state-update tools — gating them would mean a tap-prompt
+        /// for every line of code Claude reads, which is unusable.
+        static let autoPassThroughTools: Set<String> = [
+            "Read",
+            "Glob",
+            "Grep",
+            "WebSearch",
+            "TodoWrite",
+            "NotebookRead",
+        ]
+
         @Option(name: .long, help: "Override the configured timeout (seconds).")
         var timeout: Double?
 
@@ -68,6 +80,14 @@ extension Hook {
             if let cmd = input.tool_input?["command"]?.stringValue,
                isTangoCommand(cmd) {
                 emitAllow(reason: "tango: self")
+                return
+            }
+
+            // Auto-pass-through for read-only / non-destructive tools. Without
+            // this, every Read/Glob/Grep would post a Tango notification —
+            // burying the prompts that actually need a tap.
+            if Self.autoPassThroughTools.contains(toolName) {
+                print("{}")
                 return
             }
 

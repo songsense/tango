@@ -60,6 +60,11 @@ public final class PatDetector: @unchecked Sendable {
     private var isRunning: Bool = false
     private var onsetObserver: (@Sendable (OnsetEvent) -> Void)?
 
+    /// Always-on onset observer, independent of `start()`. Set once by the
+    /// AppDelegate so the menu-bar icon can flash on every accepted tap —
+    /// gives the user instant "your tap landed" feedback.
+    public var onAnyOnset: (@Sendable (OnsetEvent) -> Void)?
+
     public init() {}
 
     public static var microphoneAuthorizationStatus: AVAuthorizationStatus {
@@ -208,6 +213,7 @@ public final class PatDetector: @unchecked Sendable {
         if let onset = analyzer.process(samples: samples, count: count) {
             clusterer.register(onset)
             observer?(onset)
+            onAnyOnset?(onset)
         }
         clusterer.tick(currentTime: analyzer.elapsedTime)
     }

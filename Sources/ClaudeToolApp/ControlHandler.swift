@@ -38,13 +38,27 @@ public actor ControlHandler {
         }
 
         let nm = notificationManager
-        try? await nm.post(title: title, subtitle: subtitle, body: body,
-                           soundEnabled: config.notifications.soundEnabled)
-
         let detectorOptions = PatDetector.Options(
             thresholdDb: Float(config.detection.sensitivityDb),
             initialNoiseFloorDb: Float(config.detection.calibratedNoiseFloorDb ?? -30)
         )
+
+        // Start the detector BEFORE posting the notification so warmup
+        // (~600ms) overlaps with notification rendering. Otherwise the user's
+        // first tap lands during the warmup window and gets silently dropped.
+        let patResolver = ContinuationResolver()
+        let detectorAvailable: Bool
+        do {
+            try detector.start(options: detectorOptions) { count in
+                patResolver.resolve(count)
+            }
+            detectorAvailable = true
+        } catch {
+            detectorAvailable = false
+        }
+
+        try? await nm.post(title: title, subtitle: subtitle, body: body,
+                           soundEnabled: config.notifications.soundEnabled)
 
         enum Outcome: Sendable {
             case button(Gesture?)
@@ -57,13 +71,14 @@ public actor ControlHandler {
                 let g = await nm.awaitButton()
                 return .button(g)
             }
-            group.addTask { [self, detector] in
-                if let count = await self.awaitPats(detector: detector, options: detectorOptions) {
-                    return .pats(count)
+            group.addTask {
+                if detectorAvailable {
+                    if let count = await patResolver.wait() {
+                        return .pats(count)
+                    }
                 }
-                // Pat detection unavailable (e.g. mic permission denied). Suspend
-                // so the button/timeout tasks decide the outcome instead of us
-                // racing back as cancelled.
+                // Mic unavailable — suspend so button/timeout decide the
+                // outcome instead of racing back as cancelled.
                 try? await Task.sleep(nanoseconds: UInt64.max)
                 return .timeout
             }
@@ -99,40 +114,27 @@ public actor ControlHandler {
         }
     }
 
-    private nonisolated func awaitPats(detector: PatDetector, options: PatDetector.Options) async -> Int? {
-        let resolver = ContinuationResolver()
-        return await withTaskCancellationHandler {
-            await withCheckedContinuation { (cont: CheckedContinuation<Int?, Never>) in
-                resolver.attach(cont: cont)
-                do {
-                    try detector.start(options: options) { count in
-                        resolver.resolve(count)
-                    }
-                } catch {
-                    resolver.resolve(nil)
-                }
-            }
-        } onCancel: {
-            detector.stop()
-            resolver.resolve(nil)
-        }
-    }
 }
 
+/// Bridges a callback-based result (the detector's `onPats` closure) into
+/// async/await. `resolve()` may run before or after `wait()`; either order
+/// works because the value buffers until someone is listening.
 private final class ContinuationResolver: @unchecked Sendable {
     private let lock = NSLock()
     private var cont: CheckedContinuation<Int?, Never>?
     private var pendingValue: Int??
 
-    func attach(cont: CheckedContinuation<Int?, Never>) {
-        lock.lock()
-        if let pendingValue {
+    func wait() async -> Int? {
+        await withCheckedContinuation { (c: CheckedContinuation<Int?, Never>) in
+            lock.lock()
+            if let pendingValue {
+                lock.unlock()
+                c.resume(returning: pendingValue)
+                return
+            }
+            self.cont = c
             lock.unlock()
-            cont.resume(returning: pendingValue)
-            return
         }
-        self.cont = cont
-        lock.unlock()
     }
 
     func resolve(_ value: Int?) {

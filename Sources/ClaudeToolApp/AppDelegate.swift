@@ -13,6 +13,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var micMenu: NSMenu?
     private var idleStatusText: String = "Idle"
     private var attentionToken: Int?
+    private var feedbackResetWorkItem: DispatchWorkItem?
+    private var isPending: Bool = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         installStatusItem()
@@ -100,6 +102,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self?.updatePendingState(pending)
         }
 
+        // Flash the menu-bar icon on every accepted onset so the user gets
+        // instant "your tap landed" feedback before the cluster fires.
+        detector.onAnyOnset = { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.pulseIconFeedback()
+            }
+        }
+
         // Request permissions in the background; if denied, pat detection and
         // notifications will silently fail-fast on the next ask request.
         Task.detached(priority: .background) {
@@ -117,6 +127,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // MARK: - Pending-state UI
 
     private func updatePendingState(_ pending: Bool) {
+        isPending = pending
         guard let button = statusItem?.button else { return }
         if pending {
             // Red bell-with-badge is universally read as "needs your attention".
@@ -151,6 +162,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 attentionToken = nil
             }
         }
+    }
+
+    /// Briefly flip the menu-bar icon to a "tap landed" symbol, then revert
+    /// to whatever state the AppDelegate is currently in (pending/idle).
+    /// Called on every detected onset, so a 3-pat cluster pulses 3 times.
+    private func pulseIconFeedback() {
+        guard let button = statusItem?.button else { return }
+        if let img = NSImage(systemSymbolName: "checkmark.circle.fill",
+                             accessibilityDescription: "Tango — tap detected") {
+            if #available(macOS 11.0, *) {
+                button.image = img.withSymbolConfiguration(
+                    NSImage.SymbolConfiguration(paletteColors: [.systemGreen])
+                )
+            } else {
+                button.image = img
+            }
+        } else {
+            button.title = "✓"
+        }
+        feedbackResetWorkItem?.cancel()
+        let revert = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            // Restore the icon that matches our current state. Calling
+            // updatePendingState with the unchanged value re-renders the icon.
+            self.updatePendingState(self.isPending)
+        }
+        feedbackResetWorkItem = revert
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.18, execute: revert)
     }
 
     // MARK: - Menu actions

@@ -157,7 +157,13 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
         case "yes": gesture = .yes
         case "yes-always": gesture = .yesAlways
         case "no": gesture = .no
-        default: gesture = nil
+        default:
+            // Default action (body tap) and dismiss must NOT cancel the
+            // pat-listening flow — a stray click on the notification used to
+            // resolve the continuation with nil and kill the mic mid-tap.
+            // Just acknowledge and keep waiting for an explicit button or pat.
+            handler()
+            return
         }
         Task { @MainActor in
             self.deliverResponse(gesture)

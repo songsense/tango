@@ -53,16 +53,18 @@ extension Hook {
             abstract: "Reads a Claude PreToolUse JSON payload from stdin and emits a permission decision to stdout."
         )
 
-        /// Tools we never want to gate with a Tango notification. Read-only
-        /// or pure-state-update tools — gating them would mean a tap-prompt
-        /// for every line of code Claude reads, which is unusable.
-        static let autoPassThroughTools: Set<String> = [
-            "Read",
-            "Glob",
-            "Grep",
-            "WebSearch",
-            "TodoWrite",
-            "NotebookRead",
+        /// Whitelist of tools that genuinely need approval — everything else
+        /// auto-passes silently. Inverted from the previous "block list"
+        /// approach because most tools don't need a tap (read-only, MCP,
+        /// internal state) and burying real approval prompts under a stream
+        /// of notifications makes Tango useless.
+        static let approvalRequiredTools: Set<String> = [
+            "Bash",
+            "Write",
+            "Edit",
+            "MultiEdit",
+            "NotebookEdit",
+            "ExitPlanMode",
         ]
 
         @Option(name: .long, help: "Override the configured timeout (seconds).")
@@ -83,10 +85,11 @@ extension Hook {
                 return
             }
 
-            // Auto-pass-through for read-only / non-destructive tools. Without
-            // this, every Read/Glob/Grep would post a Tango notification —
-            // burying the prompts that actually need a tap.
-            if Self.autoPassThroughTools.contains(toolName) {
+            // Default-silent: only fire a Tango notification for tools that
+            // genuinely need user approval. Everything else (Read, Grep,
+            // WebSearch, MCP calls, agent delegation, etc.) returns {} so
+            // Claude Code's auto-permission flow handles it without a tap.
+            if !Self.approvalRequiredTools.contains(toolName) {
                 print("{}")
                 return
             }

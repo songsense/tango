@@ -125,15 +125,22 @@ private final class ContinuationResolver: @unchecked Sendable {
     private var pendingValue: Int??
 
     func wait() async -> Int? {
-        await withCheckedContinuation { (c: CheckedContinuation<Int?, Never>) in
-            lock.lock()
-            if let pendingValue {
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { (c: CheckedContinuation<Int?, Never>) in
+                lock.lock()
+                if let pendingValue {
+                    lock.unlock()
+                    c.resume(returning: pendingValue)
+                    return
+                }
+                self.cont = c
                 lock.unlock()
-                c.resume(returning: pendingValue)
-                return
             }
-            self.cont = c
-            lock.unlock()
+        } onCancel: {
+            // Without this, a cancelled task hangs on the continuation forever,
+            // blocking withTaskGroup from returning and the daemon from
+            // writing a reply — observed as "invalid daemon response: ".
+            resolve(nil)
         }
     }
 

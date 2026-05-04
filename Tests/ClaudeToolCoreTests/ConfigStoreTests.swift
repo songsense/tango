@@ -9,7 +9,7 @@ final class ConfigStoreTests: XCTestCase {
         let store = ConfigStore(configURL: tmp)
 
         let loaded = try store.load()
-        XCTAssertEqual(loaded.detection.timeoutSeconds, 180)
+        XCTAssertEqual(loaded.detection.timeoutSeconds, 30)
         XCTAssertEqual(loaded.gestures.onePat, .yes)
         XCTAssertEqual(loaded.gestures.twoPat, .yesAlways)
         XCTAssertEqual(loaded.gestures.threePat, .no)

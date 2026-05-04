@@ -11,6 +11,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var monitorController: MonitorWindowController?
     private var calibrationController: CalibrationWindowController?
     private var micMenu: NSMenu?
+    private var idleStatusText: String = "Idle"
+    private var attentionToken: Int?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         installStatusItem()
@@ -83,10 +85,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self.detector = detector
             self.handler = handler
             self.server = server
-            statusMenuStatusItem?.title = "Listening on socket"
+            idleStatusText = "Listening on socket"
+            statusMenuStatusItem?.title = idleStatusText
         } catch {
             NSLog("Tango: ControlServer failed to start: \(error)")
-            statusMenuStatusItem?.title = "Error: \(error.localizedDescription)"
+            idleStatusText = "Error: \(error.localizedDescription)"
+            statusMenuStatusItem?.title = idleStatusText
+        }
+
+        // Wire pending-state UI: when a prompt is awaiting your tap, the
+        // menu-bar icon flips to a high-contrast alert symbol and the dock
+        // gets a critical attention request. Both reset on resolve.
+        NotificationManager.shared.onPendingChange = { [weak self] pending in
+            self?.updatePendingState(pending)
         }
 
         // Request permissions in the background; if denied, pat detection and
@@ -99,6 +110,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
             if !notifGranted {
                 NSLog("Tango: notification permission denied — visual alerts disabled")
+            }
+        }
+    }
+
+    // MARK: - Pending-state UI
+
+    private func updatePendingState(_ pending: Bool) {
+        guard let button = statusItem?.button else { return }
+        if pending {
+            // Red bell-with-badge is universally read as "needs your attention".
+            // Falls back to text if the symbol isn't available on this OS.
+            if let img = NSImage(systemSymbolName: "bell.badge.fill",
+                                 accessibilityDescription: "Tango — waiting for tap") {
+                if #available(macOS 11.0, *) {
+                    button.image = img.withSymbolConfiguration(
+                        NSImage.SymbolConfiguration(paletteColors: [.systemRed])
+                    )
+                } else {
+                    button.image = img
+                }
+            } else {
+                button.title = "TG!"
+            }
+            statusMenuStatusItem?.title = "Waiting for your tap…"
+            // .criticalRequest keeps the dock icon (if any) bouncing until the
+            // app activates. For a menu-bar-only app this is mostly a no-op,
+            // but harmless and useful if LSUIElement is ever flipped off.
+            attentionToken = NSApp.requestUserAttention(.criticalRequest)
+        } else {
+            if let img = NSImage(systemSymbolName: "hand.tap",
+                                 accessibilityDescription: "Tango") {
+                button.image = img
+            } else {
+                button.title = "TG"
+            }
+            statusMenuStatusItem?.title = idleStatusText
+            if let token = attentionToken {
+                NSApp.cancelUserAttentionRequest(token)
+                attentionToken = nil
             }
         }
     }

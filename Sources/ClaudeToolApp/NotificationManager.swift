@@ -12,6 +12,11 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
     private var currentRequestId: String?
     private var continuation: CheckedContinuation<Gesture?, Never>?
 
+    /// Fired on the main actor when a prompt becomes pending (true) or resolves
+    /// (false). Lets the AppDelegate update the menu-bar icon, bounce the dock,
+    /// or otherwise grab the user's attention while we're waiting for a tap.
+    public var onPendingChange: ((Bool) -> Void)?
+
     public override init() {
         super.init()
         center.delegate = self
@@ -76,6 +81,7 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
         let req = UNNotificationRequest(identifier: id, content: content, trigger: nil)
         currentRequestId = id
         try await center.add(req)
+        onPendingChange?(true)
     }
 
     /// Suspend until the user taps an action button. Returns nil if cancelled
@@ -111,6 +117,7 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
     }
 
     private func cancelLocked(reason: CancelReason) {
+        let wasPending = currentRequestId != nil || continuation != nil
         if let id = currentRequestId {
             center.removeDeliveredNotifications(withIdentifiers: [id])
             center.removePendingNotificationRequests(withIdentifiers: [id])
@@ -119,6 +126,12 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
         if let cont = continuation {
             continuation = nil
             cont.resume(returning: nil)
+        }
+        // Only fire the resolved signal for genuine cancellations, not when
+        // we're being superseded by a fresh post() that's about to fire its
+        // own onPendingChange(true) callback.
+        if wasPending && reason == .external {
+            onPendingChange?(false)
         }
     }
 
@@ -158,5 +171,6 @@ public final class NotificationManager: NSObject, @preconcurrency UNUserNotifica
             continuation = nil
             cont.resume(returning: gesture)
         }
+        onPendingChange?(false)
     }
 }

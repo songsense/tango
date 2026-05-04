@@ -1,0 +1,197 @@
+file,category,keep,t_sec,peak_db,rms_db,centroid_hz,flatness,decay_ms
+Clap with hands - Keep.m4a,clap,True,0.832,-22.03,-38.38,6587.8,0.544,170.7
+Clap with hands - Keep.m4a,clap,True,0.896,-31.89,-42.72,4003.5,0.236,170.7
+Clap with hands - Keep.m4a,clap,True,0.960,-38.40,-49.83,3814.5,0.219,200.0
+Clap with hands - Keep.m4a,clap,True,1.429,-40.99,-51.67,3289.6,0.245,200.0
+Clap with hands - Keep.m4a,clap,True,1.813,2.72,-11.38,4759.2,0.396,21.3
+Clap with hands - Keep.m4a,clap,True,1.877,-20.76,-30.83,3763.9,0.165,128.0
+Clap with hands - Keep.m4a,clap,True,1.941,-28.19,-37.60,3425.0,0.128,149.3
+Clap with hands - Keep.m4a,clap,True,2.005,-33.49,-42.97,3213.6,0.119,192.0
+Clap with hands - Keep.m4a,clap,True,2.069,-38.33,-48.68,3659.0,0.171,200.0
+Clap with hands - Keep.m4a,clap,True,2.731,-8.77,-31.14,6417.0,0.529,106.7
+Clap with hands - Keep.m4a,clap,True,2.795,-31.19,-40.47,4086.2,0.234,128.0
+Clap with hands - Keep.m4a,clap,True,2.859,-35.82,-45.78,3371.9,0.197,192.0
+Clap with hands - Keep.m4a,clap,True,3.627,1.44,-17.80,4137.7,0.326,21.3
+Clap with hands - Keep.m4a,clap,True,3.691,-28.06,-38.02,3678.9,0.178,128.0
+Clap with hands - Keep.m4a,clap,True,3.755,-30.94,-43.95,3315.4,0.157,170.7
+Clap with hands - Keep.m4a,clap,True,3.819,-40.55,-50.20,3441.4,0.199,200.0
+Clap with hands - Keep.m4a,clap,True,4.523,-9.80,-28.46,5136.3,0.429,42.7
+Clap with hands - Keep.m4a,clap,True,4.587,-37.26,-46.82,4015.8,0.282,200.0
+Clap with hands - Keep.m4a,clap,True,4.651,-43.52,-52.82,3371.3,0.224,200.0
+Clap with hands - Keep.m4a,clap,True,5.461,1.57,-13.57,6282.7,0.506,21.3
+Clap with hands - Keep.m4a,clap,True,5.525,-23.67,-33.74,4480.8,0.214,128.0
+Clap with hands - Keep.m4a,clap,True,5.589,-29.65,-40.07,3955.7,0.162,149.3
+Clap with hands - Keep.m4a,clap,True,5.653,-33.43,-45.92,3615.3,0.167,200.0
+Clap with hands - Keep.m4a,clap,True,5.717,-41.71,-51.64,3660.3,0.202,200.0
+Clap with hands - Keep.m4a,clap,True,6.357,0.84,-18.74,4675.9,0.364,42.7
+Clap with hands - Keep.m4a,clap,True,6.421,-27.32,-38.06,3746.6,0.184,149.3
+Clap with hands - Keep.m4a,clap,True,6.485,-34.35,-44.21,3391.1,0.160,170.7
+Clap with hands - Keep.m4a,clap,True,6.549,-40.59,-49.69,3535.6,0.205,200.0
+Clap with hands - Keep.m4a,clap,True,7.275,2.21,-12.76,4607.9,0.346,21.3
+Clap with hands - Keep.m4a,clap,True,7.339,-20.67,-31.75,4232.6,0.141,128.0
+Clap with hands - Keep.m4a,clap,True,7.403,-28.11,-38.13,4066.4,0.132,149.3
+Clap with hands - Keep.m4a,clap,True,7.467,-34.26,-44.47,3777.7,0.152,192.0
+Clap with hands - Keep.m4a,clap,True,7.531,-40.37,-49.38,3970.8,0.201,200.0
+Clap with hands - Keep.m4a,clap,True,8.341,-40.33,-49.51,2322.2,0.188,200.0
+Clap with hands - Keep.m4a,clap,True,8.405,-38.02,-47.87,2989.8,0.262,200.0
+Clap with hands - Keep.m4a,clap,True,8.469,-38.64,-48.51,3545.3,0.256,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,1.003,-14.90,-25.79,1554.5,0.098,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,1.067,-36.82,-45.79,2114.9,0.155,192.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,1.984,-16.00,-27.43,1509.5,0.082,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,2.048,-37.57,-46.54,1993.0,0.143,170.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,2.965,-22.23,-47.81,3898.6,0.335,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,3.029,-34.22,-45.53,2065.8,0.152,149.3
+Finger tap on the desk - Keep.m4a,finger-tap,True,3.093,-45.37,-53.78,2728.6,0.227,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,3.904,-16.03,-31.04,2137.9,0.147,64.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,3.968,-33.15,-44.18,2175.2,0.160,128.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,4.032,-44.97,-52.68,2564.1,0.208,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,4.907,-19.82,-30.78,1780.2,0.115,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,4.971,-40.44,-48.98,2158.5,0.173,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,5.269,-17.93,-29.51,1652.3,0.106,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,5.333,-39.40,-48.82,2197.3,0.168,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.037,-18.38,-29.24,1385.5,0.074,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.101,-41.06,-49.16,2512.4,0.200,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.315,-20.66,-31.81,1673.8,0.114,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.379,-42.14,-50.50,2390.7,0.188,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.592,-23.34,-32.69,988.8,0.062,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,6.656,-40.74,-50.79,3001.7,0.247,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,7.424,-15.51,-27.92,1554.6,0.081,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,7.488,-36.49,-45.63,2120.8,0.165,149.3
+Finger tap on the desk - Keep.m4a,finger-tap,True,7.552,-43.25,-52.85,2892.4,0.244,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,8.299,-13.77,-26.22,1705.0,0.097,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,8.363,-35.02,-44.79,1879.2,0.134,128.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,8.427,-43.59,-52.28,2483.2,0.202,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,9.173,-17.94,-29.44,1407.1,0.086,42.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,9.237,-40.20,-49.47,2580.7,0.196,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.005,-17.58,-37.38,3647.6,0.315,106.7
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.069,-31.95,-43.26,1992.4,0.143,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.133,-42.66,-52.11,2614.8,0.215,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.197,-38.42,-50.15,3526.3,0.252,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.261,-38.27,-47.05,3493.0,0.176,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,10.325,-41.21,-50.73,3259.6,0.195,200.0
+Finger tap on the desk - Keep.m4a,finger-tap,True,11.008,-43.05,-53.26,3106.9,0.263,200.0
+Keystroke - Filter.m4a,keystroke,False,1.472,-41.39,-51.21,3200.3,0.254,200.0
+Keystroke - Filter.m4a,keystroke,False,1.941,-42.66,-53.26,3558.7,0.305,200.0
+Keystroke - Filter.m4a,keystroke,False,2.389,-41.33,-52.56,3492.4,0.302,200.0
+Keystroke - Filter.m4a,keystroke,False,2.453,-39.68,-50.73,2689.0,0.211,200.0
+Keystroke - Filter.m4a,keystroke,False,2.581,-41.73,-51.23,3343.2,0.262,200.0
+Keystroke - Filter.m4a,keystroke,False,3.349,-39.52,-50.66,6124.1,0.441,200.0
+Keystroke - Filter.m4a,keystroke,False,3.669,-39.86,-51.79,3412.8,0.297,200.0
+Keystroke - Filter.m4a,keystroke,False,3.819,-40.90,-49.55,3125.0,0.265,200.0
+Keystroke - Filter.m4a,keystroke,False,3.883,-44.79,-51.70,2941.7,0.247,200.0
+Keystroke - Filter.m4a,keystroke,False,4.459,-39.13,-47.02,2368.0,0.196,85.3
+Keystroke - Filter.m4a,keystroke,False,4.949,-39.21,-52.57,3007.4,0.250,200.0
+Keystroke - Filter.m4a,keystroke,False,5.056,-39.83,-52.12,2396.0,0.185,200.0
+Keystroke - Filter.m4a,keystroke,False,5.803,-38.44,-50.48,2447.1,0.179,200.0
+Keystroke - Filter.m4a,keystroke,False,6.037,-40.64,-50.06,3023.6,0.253,200.0
+Keystroke - Filter.m4a,keystroke,False,6.144,-41.41,-50.37,2932.8,0.238,200.0
+Keystroke - Filter.m4a,keystroke,False,6.336,-29.46,-45.03,3494.6,0.212,128.0
+Keystroke - Filter.m4a,keystroke,False,6.485,-39.53,-50.35,4526.5,0.310,200.0
+Keystroke - Filter.m4a,keystroke,False,7.104,-40.44,-52.42,4194.7,0.348,200.0
+Keystroke - Filter.m4a,keystroke,False,7.189,-41.66,-50.67,2480.2,0.203,200.0
+Keystroke - Filter.m4a,keystroke,False,7.445,-43.49,-53.23,4185.7,0.337,200.0
+Keystroke - Filter.m4a,keystroke,False,7.573,-40.69,-50.85,2643.6,0.220,200.0
+Keystroke - Filter.m4a,keystroke,False,7.829,-38.56,-47.97,1912.7,0.161,128.0
+Keystroke - Filter.m4a,keystroke,False,8.576,-42.80,-53.03,3980.0,0.323,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,0.533,-42.11,-49.53,2322.6,0.193,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,1.131,-25.34,-42.63,3392.7,0.285,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,1.195,-25.97,-35.88,2005.5,0.133,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,1.259,-36.72,-47.04,2634.3,0.196,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,1.323,-41.77,-51.08,2725.8,0.221,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,1.877,-21.69,-34.43,3185.4,0.259,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,1.941,-34.72,-42.81,2363.8,0.166,106.7
+Pat on the desk - Keep.m4a,pat-desk,True,2.197,-44.74,-51.83,2883.2,0.261,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,2.581,-16.47,-26.51,2393.5,0.183,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,2.645,-36.11,-43.18,2283.0,0.167,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,2.709,-41.62,-50.78,2878.4,0.234,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,2.773,-41.32,-49.80,3719.3,0.311,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.307,-1.00,-15.81,2448.1,0.155,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,3.371,-20.96,-30.82,2776.9,0.143,149.3
+Pat on the desk - Keep.m4a,pat-desk,True,3.435,-29.27,-38.43,2698.9,0.141,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.499,-30.64,-40.64,2432.1,0.138,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.563,-37.35,-46.58,2896.7,0.194,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.627,-39.32,-48.44,2573.2,0.184,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.819,-37.03,-46.70,2055.1,0.146,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,3.883,-30.28,-39.64,3084.5,0.184,149.3
+Pat on the desk - Keep.m4a,pat-desk,True,3.947,-34.76,-44.06,3393.0,0.235,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.075,-17.48,-26.48,2960.0,0.169,64.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.139,-28.83,-40.80,2608.2,0.177,192.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.267,-37.81,-44.95,2390.0,0.200,128.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.736,-8.48,-20.30,2007.3,0.119,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,4.800,-27.69,-36.06,1971.3,0.130,64.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.864,-38.09,-48.44,2894.3,0.210,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,4.928,-41.03,-49.05,2893.7,0.237,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.397,-13.42,-26.93,3578.0,0.225,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,5.461,-27.87,-34.69,2422.5,0.147,64.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.525,-36.18,-47.13,2569.6,0.178,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.589,-34.53,-42.16,1788.6,0.135,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.696,-26.21,-32.75,1523.3,0.107,64.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.760,-37.24,-47.25,3010.8,0.226,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,5.995,-19.28,-25.89,2153.4,0.160,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,6.059,-38.76,-48.08,2678.3,0.220,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,6.635,-9.95,-20.95,2847.9,0.202,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,6.699,-27.33,-37.85,2734.7,0.170,149.3
+Pat on the desk - Keep.m4a,pat-desk,True,6.763,-36.95,-46.47,2829.1,0.189,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,6.827,-41.20,-49.45,2976.5,0.219,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,7.275,-36.69,-47.80,2967.9,0.244,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,7.339,-34.84,-42.48,2445.9,0.188,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,7.957,-39.84,-48.33,2956.8,0.247,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,8.043,-6.77,-20.83,3075.8,0.187,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,8.107,-23.28,-31.28,2530.4,0.142,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,8.171,-33.61,-43.11,2647.3,0.159,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,8.235,-37.33,-46.42,2544.2,0.171,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,8.512,-36.76,-48.29,4473.8,0.249,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,9.152,-14.23,-26.93,3045.2,0.245,64.0
+Pat on the desk - Keep.m4a,pat-desk,True,9.216,-32.10,-40.92,2141.9,0.138,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,9.280,-40.46,-48.86,2953.9,0.231,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,9.344,-43.10,-50.08,3596.6,0.300,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,9.408,-43.92,-51.15,3736.6,0.325,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,10.219,-6.34,-21.96,3128.5,0.180,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,10.283,-24.02,-33.58,2554.5,0.139,85.3
+Pat on the desk - Keep.m4a,pat-desk,True,10.347,-34.80,-44.29,2835.3,0.182,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,10.411,-38.15,-48.01,2600.3,0.184,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,11.093,-16.88,-26.04,1725.9,0.104,42.7
+Pat on the desk - Keep.m4a,pat-desk,True,11.157,-35.32,-43.98,2524.8,0.180,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,11.221,-38.95,-50.09,2627.8,0.204,200.0
+Pat on the desk - Keep.m4a,pat-desk,True,11.285,-42.96,-51.31,3375.3,0.288,200.0
+Voice - Filter.m4a,voice,False,1.109,-40.45,-51.69,2858.7,0.210,200.0
+Voice - Filter.m4a,voice,False,1.173,-16.09,-29.16,1455.5,0.063,200.0
+Voice - Filter.m4a,voice,False,1.237,-19.06,-30.75,1685.3,0.076,200.0
+Voice - Filter.m4a,voice,False,1.301,-25.61,-34.51,1828.9,0.097,200.0
+Voice - Filter.m4a,voice,False,1.365,-29.95,-36.53,2102.9,0.104,192.0
+Voice - Filter.m4a,voice,False,1.429,-30.74,-37.43,1721.9,0.111,128.0
+Voice - Filter.m4a,voice,False,1.493,-34.78,-44.44,2122.9,0.158,128.0
+Voice - Filter.m4a,voice,False,1.557,-41.18,-49.44,2447.0,0.204,200.0
+Voice - Filter.m4a,voice,False,1.813,-41.85,-51.38,3575.0,0.254,200.0
+Voice - Filter.m4a,voice,False,1.877,-24.72,-34.20,1665.4,0.099,64.0
+Voice - Filter.m4a,voice,False,1.963,-32.76,-46.88,2939.0,0.214,200.0
+Voice - Filter.m4a,voice,False,2.027,-27.34,-33.68,1640.4,0.081,128.0
+Voice - Filter.m4a,voice,False,2.091,-28.80,-36.47,1527.3,0.093,64.0
+Voice - Filter.m4a,voice,False,2.197,-30.78,-45.33,3410.6,0.214,200.0
+Voice - Filter.m4a,voice,False,2.261,-30.11,-37.85,1764.9,0.108,149.3
+Voice - Filter.m4a,voice,False,2.325,-32.64,-41.04,1904.3,0.136,106.7
+Voice - Filter.m4a,voice,False,3.221,-32.36,-44.69,2415.8,0.163,200.0
+Voice - Filter.m4a,voice,False,3.285,-31.42,-38.64,2500.2,0.172,149.3
+Voice - Filter.m4a,voice,False,3.349,-36.00,-45.25,6040.0,0.327,128.0
+Voice - Filter.m4a,voice,False,3.413,-33.25,-46.73,5041.4,0.276,200.0
+Voice - Filter.m4a,voice,False,3.499,-31.70,-47.02,4455.2,0.319,200.0
+Voice - Filter.m4a,voice,False,3.563,-25.70,-34.78,1691.2,0.097,200.0
+Voice - Filter.m4a,voice,False,3.627,-25.19,-32.62,1722.4,0.090,192.0
+Voice - Filter.m4a,voice,False,3.691,-28.22,-36.29,2376.0,0.107,128.0
+Voice - Filter.m4a,voice,False,3.755,-30.27,-42.30,2976.4,0.147,128.0
+Voice - Filter.m4a,voice,False,5.077,-35.16,-51.52,4109.6,0.313,200.0
+Voice - Filter.m4a,voice,False,5.141,-28.24,-36.14,1912.9,0.109,42.7
+Voice - Filter.m4a,voice,False,5.205,-32.18,-46.73,3809.8,0.275,200.0
+Voice - Filter.m4a,voice,False,5.269,-27.79,-34.88,2586.8,0.138,64.0
+Voice - Filter.m4a,voice,False,5.333,-37.26,-47.07,6424.6,0.329,200.0
+Voice - Filter.m4a,voice,False,5.397,-38.38,-49.83,5447.6,0.298,200.0
+Voice - Filter.m4a,voice,False,5.461,-27.44,-35.45,2150.0,0.105,200.0
+Voice - Filter.m4a,voice,False,5.525,-30.68,-37.78,2012.5,0.116,200.0
+Voice - Filter.m4a,voice,False,5.589,-30.48,-37.82,2113.0,0.109,149.3
+Voice - Filter.m4a,voice,False,5.653,-32.68,-41.50,2055.7,0.118,106.7
+Voice - Filter.m4a,voice,False,5.717,-38.07,-47.62,2498.7,0.165,200.0
+Voice - Filter.m4a,voice,False,6.165,-24.47,-39.25,1847.7,0.128,200.0
+Voice - Filter.m4a,voice,False,6.229,-24.90,-34.55,2377.1,0.124,170.7
+Voice - Filter.m4a,voice,False,6.293,-27.21,-38.50,2265.8,0.130,128.0
+Voice - Filter.m4a,voice,False,6.357,-30.63,-43.56,2437.6,0.144,106.7
+Voice - Filter.m4a,voice,False,6.805,-40.50,-50.68,2798.4,0.231,200.0

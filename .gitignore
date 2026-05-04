@@ -1,0 +1,14 @@
+.DS_Store
+.build/
+*.xcuserdata/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.resolved
+!Package.resolved
+build/
+*.o
+*.d
+__pycache__/
+*.pyc
+*.pyo

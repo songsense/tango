@@ -14,7 +14,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var idleStatusText: String = "Idle"
     private var attentionToken: Int?
     private var feedbackResetWorkItem: DispatchWorkItem?
+    private var pendingTransitionWorkItem: DispatchWorkItem?
     private var isPending: Bool = false
+
+    /// The four visual states for the menu-bar icon. Each renders a distinct
+    /// SF Symbol + color so the user can tell at a glance what Tango is doing.
+    private enum IconState {
+        /// No active prompt.
+        case idle
+        /// A prompt just arrived — grab the user's eye before they scan past.
+        case alerting
+        /// Mic is on, ready to receive taps.
+        case listening
+        /// A tap was just detected — transient flash colour for feedback.
+        case flash
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         installStatusItem()
@@ -36,13 +50,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func installStatusItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        if let button = item.button {
-            if let image = NSImage(systemSymbolName: "hand.tap", accessibilityDescription: "Tango") {
-                button.image = image
-            } else {
-                button.title = "TG"
-            }
-        }
+        statusItem = item
+        applyIconState(.idle)
         let menu = NSMenu()
         menu.addItem(menuLabel("Tango"))
         menu.addItem(.separator())
@@ -64,7 +73,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         menu.addItem(menuItem("Quit Tango", action: #selector(quit), key: "q"))
         item.menu = menu
-        statusItem = item
     }
 
     private func bootstrapBackend() async {
@@ -128,34 +136,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func updatePendingState(_ pending: Bool) {
         isPending = pending
-        guard let button = statusItem?.button else { return }
+        pendingTransitionWorkItem?.cancel()
+        feedbackResetWorkItem?.cancel()
+
         if pending {
-            // Red bell-with-badge is universally read as "needs your attention".
-            // Falls back to text if the symbol isn't available on this OS.
-            if let img = NSImage(systemSymbolName: "bell.badge.fill",
-                                 accessibilityDescription: "Tango — waiting for tap") {
-                if #available(macOS 11.0, *) {
-                    button.image = img.withSymbolConfiguration(
-                        NSImage.SymbolConfiguration(paletteColors: [.systemRed])
-                    )
-                } else {
-                    button.image = img
-                }
-            } else {
-                button.title = "TG!"
-            }
+            // Stage 1: red bell to grab attention. Stage 2 (after ~1s): yellow
+            // listening icon, signalling "mic is on, tap now". Two distinct
+            // states so the user can tell "new prompt" from "still waiting".
+            applyIconState(.alerting)
             statusMenuStatusItem?.title = "Waiting for your tap…"
-            // .criticalRequest keeps the dock icon (if any) bouncing until the
-            // app activates. For a menu-bar-only app this is mostly a no-op,
-            // but harmless and useful if LSUIElement is ever flipped off.
             attentionToken = NSApp.requestUserAttention(.criticalRequest)
-        } else {
-            if let img = NSImage(systemSymbolName: "hand.tap",
-                                 accessibilityDescription: "Tango") {
-                button.image = img
-            } else {
-                button.title = "TG"
+
+            let toListening = DispatchWorkItem { [weak self] in
+                guard let self, self.isPending else { return }
+                self.applyIconState(.listening)
             }
+            pendingTransitionWorkItem = toListening
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: toListening)
+        } else {
+            applyIconState(.idle)
             statusMenuStatusItem?.title = idleStatusText
             if let token = attentionToken {
                 NSApp.cancelUserAttentionRequest(token)
@@ -164,32 +163,63 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
-    /// Briefly flip the menu-bar icon to a "tap landed" symbol, then revert
-    /// to whatever state the AppDelegate is currently in (pending/idle).
-    /// Called on every detected onset, so a 3-pat cluster pulses 3 times.
-    private func pulseIconFeedback() {
+    /// Render the menu-bar icon for one of the four lifecycle states. Centralised
+    /// so the flash sequence and the pending transition both go through one path.
+    private func applyIconState(_ state: IconState) {
         guard let button = statusItem?.button else { return }
-        if let img = NSImage(systemSymbolName: "checkmark.circle.fill",
-                             accessibilityDescription: "Tango — tap detected") {
-            if #available(macOS 11.0, *) {
+        let symbol: String
+        let label: String
+        let color: NSColor?
+        switch state {
+        case .idle:
+            symbol = "hand.tap"
+            label = "Tango"
+            color = nil
+        case .alerting:
+            symbol = "bell.badge.fill"
+            label = "Tango — waiting for tap"
+            color = .systemRed
+        case .listening:
+            symbol = "ear.fill"
+            label = "Tango — listening"
+            color = .systemYellow
+        case .flash:
+            symbol = "ear.fill"
+            label = "Tango — tap detected"
+            color = .white
+        }
+        if let img = NSImage(systemSymbolName: symbol, accessibilityDescription: label) {
+            if #available(macOS 11.0, *), let color {
                 button.image = img.withSymbolConfiguration(
-                    NSImage.SymbolConfiguration(paletteColors: [.systemGreen])
+                    NSImage.SymbolConfiguration(paletteColors: [color])
                 )
             } else {
                 button.image = img
             }
         } else {
-            button.title = "✓"
+            button.title = state == .idle ? "TG" : "TG!"
         }
+    }
+
+    /// Yellow → white → yellow → white flash on every accepted onset. A 3-pat
+    /// cluster fires three of these in a row, giving the user instant proof
+    /// that each tap landed before the cluster resolves into a gesture.
+    private func pulseIconFeedback() {
+        guard isPending else { return }
         feedbackResetWorkItem?.cancel()
-        let revert = DispatchWorkItem { [weak self] in
-            guard let self else { return }
-            // Restore the icon that matches our current state. Calling
-            // updatePendingState with the unchanged value re-renders the icon.
-            self.updatePendingState(self.isPending)
+        pendingTransitionWorkItem?.cancel()
+
+        applyIconState(.flash)
+        let toListening1 = DispatchWorkItem { [weak self] in self?.applyIconState(.listening) }
+        let toFlash2 = DispatchWorkItem { [weak self] in self?.applyIconState(.flash) }
+        let restore = DispatchWorkItem { [weak self] in
+            guard let self, self.isPending else { return }
+            self.applyIconState(.listening)
         }
-        feedbackResetWorkItem = revert
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.18, execute: revert)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.06, execute: toListening1)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.12, execute: toFlash2)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.18, execute: restore)
+        feedbackResetWorkItem = restore
     }
 
     // MARK: - Menu actions

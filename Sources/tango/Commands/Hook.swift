@@ -62,6 +62,15 @@ extension Hook {
             let toolName = input.tool_name ?? "tool"
             let commandPreview = previewCommand(toolName: toolName, input: input.tool_input)
 
+            // Explicitly allow tango's own commands so Claude Code doesn't
+            // fall back to its built-in permission dialog, which would block
+            // the tap that was meant for the tango ask notification.
+            if let cmd = input.tool_input?["command"]?.stringValue,
+               isTangoCommand(cmd) {
+                emitAllow(reason: "tango: self")
+                return
+            }
+
             let config = (try? ConfigStore.shared.load()) ?? AppConfig()
             let mode = config.hooks.preToolUse.mode
             if mode == .whitelist {
@@ -132,6 +141,12 @@ extension Hook {
             return nil
         }
 
+        private func isTangoCommand(_ cmd: String) -> Bool {
+            // Match bare "tango …" or any absolute path ending in "/tango …"
+            let exe = cmd.split(separator: " ").first.map(String.init) ?? cmd
+            return exe == "tango" || exe.hasSuffix("/tango")
+        }
+
         private func shortPath(_ path: String) -> String {
             let home = FileManager.default.homeDirectoryForCurrentUser.path
             let rel = path.hasPrefix(home) ? "~" + path.dropFirst(home.count) : path
@@ -141,6 +156,22 @@ extension Hook {
                 return "…/" + parts.suffix(2).joined(separator: "/")
             }
             return rel
+        }
+
+        private func emitAllow(reason: String) {
+            let payload: [String: Any] = [
+                "hookSpecificOutput": [
+                    "hookEventName": "PreToolUse",
+                    "permissionDecision": "allow",
+                    "permissionDecisionReason": reason
+                ]
+            ]
+            if let data = try? JSONSerialization.data(withJSONObject: payload, options: [.sortedKeys]),
+               let str = String(data: data, encoding: .utf8) {
+                print(str)
+            } else {
+                print("{}")
+            }
         }
 
         private func emitDecision(reply: AskReply) {

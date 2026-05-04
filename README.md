@@ -35,10 +35,18 @@ Tango uses Apple's `SoundAnalysis` framework to suppress human voice — if you'
 
 ## Installation
 
+### One-liner (Apple Silicon)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/songsense/tango/main/install.sh | bash
+```
+
+Downloads the latest release binary from GitHub, installs `tango` to `/usr/local/bin`, and copies `Tango.app` to `/Applications`.
+
 ### Build from source
 
 ```bash
-git clone https://github.com/yourusername/tango.git
+git clone https://github.com/songsense/tango.git
 cd tango
 swift build -c release --product tango
 swift build -c release --product ClaudeToolApp

@@ -100,62 +100,23 @@ extension Hook {
         }
 
         private func previewCommand(toolName: String, input: [String: AnyJSON]?) -> String? {
-            switch toolName {
-            case "Bash":
-                return input?["command"]?.stringValue
-            case "Read":
-                return input?["file_path"]?.stringValue.map { "Read \(shortPath($0))" }
-            case "Write":
-                return input?["file_path"]?.stringValue.map { "Write \(shortPath($0))" }
-            case "Edit", "MultiEdit":
-                return input?["file_path"]?.stringValue.map { "Edit \(shortPath($0))" }
-            case "WebFetch":
-                if let url = input?["url"]?.stringValue {
-                    return (URL(string: url)?.host).map { "Fetch \($0)" } ?? "Fetch URL"
-                }
-            case "WebSearch":
-                return input?["query"]?.stringValue.map { "Search: \"\($0)\"" }
-            case "Grep":
-                if let pattern = input?["pattern"]?.stringValue {
-                    let loc = input?["path"]?.stringValue.map { " in \(shortPath($0))" } ?? ""
-                    return "Search \"\(pattern)\"\(loc)"
-                }
-            case "Glob":
-                return input?["pattern"]?.stringValue.map { "Find \($0)" }
-            case "EnterPlanMode":
-                return "Switch to plan mode — review before I start acting"
-            case "ExitPlanMode":
-                return "Commit plan and begin execution"
-            case "Agent":
-                return input?["description"]?.stringValue.map { "Launch agent: \($0)" } ?? "Launch sub-agent"
-            case "TodoWrite":
-                return "Update task list"
-            default:
-                break
-            }
-            // Generic fallback: pick the first recognisable string field.
-            guard let input else { return nil }
-            if let cmd = input["command"]?.stringValue { return cmd }
-            if let path = input["file_path"]?.stringValue { return path }
-            if let url = input["url"]?.stringValue { return url }
-            return nil
+            return ToolPreview.text(toolName: toolName, fields: flattenStringFields(input))
         }
 
         private func isTangoCommand(_ cmd: String) -> Bool {
-            // Match bare "tango …" or any absolute path ending in "/tango …"
-            let exe = cmd.split(separator: " ").first.map(String.init) ?? cmd
-            return exe == "tango" || exe.hasSuffix("/tango")
+            return ToolPreview.isTangoSelfCommand(cmd)
         }
 
-        private func shortPath(_ path: String) -> String {
-            let home = FileManager.default.homeDirectoryForCurrentUser.path
-            let rel = path.hasPrefix(home) ? "~" + path.dropFirst(home.count) : path
-            // Show last 2 components to keep it scannable.
-            let parts = rel.split(separator: "/", omittingEmptySubsequences: false)
-            if parts.count > 3 {
-                return "…/" + parts.suffix(2).joined(separator: "/")
+        /// Pull every top-level string field out of the AnyJSON dict. Non-string
+        /// fields (numbers, nested objects, arrays) are silently dropped — the
+        /// previewer only needs strings to render its message.
+        private func flattenStringFields(_ input: [String: AnyJSON]?) -> [String: String] {
+            guard let input else { return [:] }
+            var out: [String: String] = [:]
+            for (k, v) in input {
+                if let s = v.stringValue { out[k] = s }
             }
-            return rel
+            return out
         }
 
         private func emitAllow(reason: String) {

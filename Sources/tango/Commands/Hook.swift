@@ -14,6 +14,10 @@ struct HookInputPreToolUse: Decodable {
     let session_id: String?
     let tool_name: String?
     let tool_input: [String: AnyJSON]?
+    /// Claude Code's per-session permission mode: "auto", "default", "plan",
+    /// "bypassPermissions". When "auto", Claude wouldn't have prompted the
+    /// user, so neither should we — Tango falls silent.
+    let permission_mode: String?
 }
 
 struct HookInputNotification: Decodable {
@@ -72,7 +76,7 @@ extension Hook {
 
         func run() throws {
             let stdin = FileHandle.standardInput.readDataToEndOfFile()
-            let input = (try? JSONDecoder().decode(HookInputPreToolUse.self, from: stdin)) ?? HookInputPreToolUse(session_id: nil, tool_name: nil, tool_input: nil)
+            let input = (try? JSONDecoder().decode(HookInputPreToolUse.self, from: stdin)) ?? HookInputPreToolUse(session_id: nil, tool_name: nil, tool_input: nil, permission_mode: nil)
             let toolName = input.tool_name ?? "tool"
             let commandPreview = previewCommand(toolName: toolName, input: input.tool_input)
 
@@ -82,6 +86,14 @@ extension Hook {
             if let cmd = input.tool_input?["command"]?.stringValue,
                isTangoCommand(cmd) {
                 emitAllow(reason: "tango: self")
+                return
+            }
+
+            // If Claude Code is in auto mode, it wouldn't have prompted the
+            // user — so Tango shouldn't either. This is the most common
+            // source of phantom "needs permission" notifications.
+            if input.permission_mode == "auto" || input.permission_mode == "bypassPermissions" {
+                print("{}")
                 return
             }
 
